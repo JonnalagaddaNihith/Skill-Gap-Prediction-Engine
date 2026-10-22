@@ -1,0 +1,10 @@
+{
+  "rows_used": 33602,
+  "students": 300,
+  "skills": 8,
+  "overall_observed_accuracy": 0.6343,
+  "sequential_diagnostic_accuracy": 0.7084,
+  "sequential_diagnostic_log_loss": 0.5761,
+  "sequential_diagnostic_brier_score": 0.1952,
+  "evaluation_note": "In-sample sequential diagnostic only: parameters were fitted on these same learner sequences. Use a student-held-out or time-ordered evaluation before claiming generalization."
+}
