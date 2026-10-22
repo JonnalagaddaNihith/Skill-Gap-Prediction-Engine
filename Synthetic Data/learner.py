@@ -32,32 +32,32 @@ for student_idx in range(1, N_STUDENTS + 1):
     student_id = f"STU{student_idx:04d}"
     # Individual learner differences
     learner_ability = rng.beta(2.2, 2.2)
-    
+
     for skill_id, (skill_name, course_id, p_learn, p_guess, p_slip, base_difficulty) in skills.items():
         n_attempts = int(rng.integers(MIN_ATTEMPTS, MAX_ATTEMPTS + 1))
         # Some students begin with more prior knowledge than others
         mastered = bool(rng.random() < (0.10 + 0.65 * learner_ability))
-        
+
         for attempt in range(1, n_attempts + 1):
             difficulty = rng.choice(difficulty_levels, p=difficulty_weights)
             difficulty_factor = {"Easy": 0.0, "Medium": 0.10, "Hard": 0.22}[difficulty]
-            
+
             # Hint use is more likely when skill is not mastered
             hint_probability = 0.12 + (0.42 if not mastered else 0.0)
             hint_used = int(rng.random() < min(hint_probability, 0.85))
-            
+
             # Response probability includes latent mastery, guessing, slipping,
             # learner ability, difficulty, and a modest hint benefit.
             if mastered:
                 p_correct = 1 - p_slip
             else:
                 p_correct = p_guess + 0.18 * learner_ability
-            
+
             p_correct += (0.08 if hint_used else 0.0)
             p_correct -= difficulty_factor
             p_correct = float(np.clip(p_correct, 0.03, 0.98))
             correct = int(rng.random() < p_correct)
-            
+
             # Simulated response time in seconds; lower on mastered/easier tasks
             base_time = {"Easy": 35, "Medium": 60, "Hard": 95}[difficulty]
             response_time = rng.lognormal(
@@ -65,10 +65,8 @@ for student_idx in range(1, N_STUDENTS + 1):
                 sigma=0.35
             )
             response_time = round(float(np.clip(response_time, 5, 600)), 2)
-            
-            answer_attempt = int(rng.choice([1, 2, 3], p=[0.78, 0.17, 0.05]))
             problem_type = str(rng.choice(problem_types, p=problem_weights))
-            
+
             rows.append({
                 "student_id": student_id,
                 "question_id": f"Q{question_counter:07d}",
@@ -79,19 +77,18 @@ for student_idx in range(1, N_STUDENTS + 1):
                 "hint_used": hint_used,
                 "difficulty": difficulty,
                 "course_id": course_id,
-                "answer_attempt": answer_attempt,
                 "problem_type": problem_type,
             })
             question_counter += 1
-            
+
             # Learning transition: probability depends on skill and learner ability
             effective_learning = min(0.75, p_learn * (0.65 + 0.70 * learner_ability))
             if not mastered and rng.random() < effective_learning:
                 mastered = True
 
 df = pd.DataFrame(rows)
-out_path = Path("synthetic_learner_assessments.csv")
-df.to_csv(out_path, index=False)
+out_path = Path("synthetic_learner_assessments.xlsx")
+df.to_excel(out_path, sheet_name="Learner_Assessment", index=False)
 
 summary = {
     "rows": len(df),

@@ -9,7 +9,7 @@ from bkt_model import fit_bkt, run_sequence, predict_correct_probability, update
 from recommend import recommend_activity
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_DATA = ROOT / "synthetic_learner_assessments.csv"
+DEFAULT_DATA = "Generated_Learner_Assessment.csv"
 ARTIFACTS = ROOT / "ml" / "artifacts"
 REQUIRED = ["student_id", "question_id", "skill_id", "correct", "attempt_number",
             "response_time", "hint_used", "difficulty", "course_id", "problem_type"]
