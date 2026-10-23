@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-"""
-Predict skill mastery and identify gaps for a student.
-"""
-
 import numpy as np
 import pandas as pd
 import torch
@@ -11,10 +6,6 @@ from architecture import FEATURE_COLS, SKILL_NAMES
 
 
 def _weak_profile(student_raw: pd.DataFrame, skill_id: str):
-    """
-    For one student + skill, find weakest difficulties and problem_types
-    (lowest accuracy, min 2 attempts).
-    """
     g = student_raw[student_raw.skill_id == skill_id]
     if g.empty:
         return [], [], {}
@@ -36,20 +27,6 @@ def _weak_profile(student_raw: pd.DataFrame, skill_id: str):
 
 def predict_mastery(student_id, feat_df, model, means, stds,
                     feature_cols=None, device="cpu"):
-    """
-    Predict mastery for every skill of a student.
-
-    Parameters
-    ----------
-    feat_df : DataFrame with columns student_id, skill_id + FEATURE_COLS
-              (values should be the *original* un-normalized features;
-                normalization is applied here using means/stds)
-    means, stds : array-like of length len(feature_cols)
-
-    Returns
-    -------
-    DataFrame with skill_id, predicted_mastery, and original feature columns
-    """
     cols = feature_cols or FEATURE_COLS
     rows = feat_df[feat_df.student_id == student_id].copy()
     if rows.empty:

@@ -1,2 +1,4 @@
 .myenv
-bkt_model_outputs
+__pycache__
+artifacts/
+DataSet_Output/

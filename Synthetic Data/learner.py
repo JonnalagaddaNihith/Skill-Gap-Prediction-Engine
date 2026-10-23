@@ -5,7 +5,7 @@ from pathlib import Path
 rng = np.random.default_rng(42)
 
 # Synthetic population and technical skills
-N_STUDENTS = 300
+N_STUDENTS = 1000
 N_SKILLS = 8
 MIN_ATTEMPTS = 8
 MAX_ATTEMPTS = 20
@@ -31,7 +31,7 @@ question_counter = 1
 for student_idx in range(1, N_STUDENTS + 1):
     student_id = f"STU{student_idx:04d}"
     # Individual learner differences
-    learner_ability = rng.beta(2.2, 2.2)
+    learner_ability = rng.beta(1.2, 2.2)
 
     for skill_id, (skill_name, course_id, p_learn, p_guess, p_slip, base_difficulty) in skills.items():
         n_attempts = int(rng.integers(MIN_ATTEMPTS, MAX_ATTEMPTS + 1))
@@ -87,7 +87,7 @@ for student_idx in range(1, N_STUDENTS + 1):
                 mastered = True
 
 df = pd.DataFrame(rows)
-out_path = Path("synthetic_learner_assessments.xlsx")
+out_path = Path("DataSet_Output/synthetic_learner_assessments.xlsx")
 df.to_excel(out_path, sheet_name="Learner_Assessment", index=False)
 
 summary = {

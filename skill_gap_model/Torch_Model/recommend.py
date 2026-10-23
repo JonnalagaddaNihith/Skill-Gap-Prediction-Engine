@@ -1,17 +1,57 @@
-#!/usr/bin/env python3
-"""
-Recommend learning activities based on skill gaps,
-matching activity difficulty and type to the student's weak areas.
-"""
-
-from architecture import LEARNING_ACTIVITIES, SKILL_NAMES
+from architecture import (
+    LEARNING_ACTIVITIES,
+    SKILL_NAMES,
+    DIFFICULTY_LEVELS,
+    PROBLEM_TYPES,
+    PROBLEM_WEIGHTS,
+)
 
 # Map activity difficulty → assessment difficulty labels
 ACT_DIFF_TO_ASSESS = {
-    "beginner": "Easy",
-    "intermediate": "Medium",
-    "advanced": "Hard",
+    "beginner": DIFFICULTY_LEVELS[0] if len(DIFFICULTY_LEVELS) > 0 else "Easy",
+    "intermediate": DIFFICULTY_LEVELS[1] if len(DIFFICULTY_LEVELS) > 1 else "Medium",
+    "advanced": DIFFICULTY_LEVELS[2] if len(DIFFICULTY_LEVELS) > 2 else "Hard",
 }
+
+# Create problem type to weight mapping
+PROBLEM_TYPE_WEIGHT = {pt: weight for pt, weight in zip(PROBLEM_TYPES, PROBLEM_WEIGHTS)}
+
+# Affinity between activity type and assessment problem_type
+# Initialize with default values for all problem types in catalog
+TYPE_AFFINITY = {
+    "coding": {},
+    "interactive": {},
+    "video": {},
+    "reading": {},
+    "project": {},
+}
+
+# Set affinity values based on problem type
+for pt in PROBLEM_TYPES:
+    if pt == "Coding":
+        TYPE_AFFINITY["coding"][pt] = 1.0
+        TYPE_AFFINITY["interactive"][pt] = 0.5
+        TYPE_AFFINITY["video"][pt] = 0.2
+        TYPE_AFFINITY["reading"][pt] = 0.2
+        TYPE_AFFINITY["project"][pt] = 1.0
+    elif pt == "Debugging":
+        TYPE_AFFINITY["coding"][pt] = 0.6
+        TYPE_AFFINITY["interactive"][pt] = 0.5
+        TYPE_AFFINITY["video"][pt] = 0.3
+        TYPE_AFFINITY["reading"][pt] = 0.3
+        TYPE_AFFINITY["project"][pt] = 0.7
+    elif pt == "Conceptual":
+        TYPE_AFFINITY["coding"][pt] = 0.2
+        TYPE_AFFINITY["interactive"][pt] = 0.6
+        TYPE_AFFINITY["video"][pt] = 1.0
+        TYPE_AFFINITY["reading"][pt] = 0.9
+        TYPE_AFFINITY["project"][pt] = 0.4
+    else:  # Multiple Choice or other
+        TYPE_AFFINITY["coding"][pt] = 0.3
+        TYPE_AFFINITY["interactive"][pt] = 0.7
+        TYPE_AFFINITY["video"][pt] = 0.5
+        TYPE_AFFINITY["reading"][pt] = 0.6
+        TYPE_AFFINITY["project"][pt] = 0.3
 
 # Affinity between activity type and assessment problem_type
 TYPE_AFFINITY = {
@@ -66,7 +106,8 @@ def recommend_activities(gaps, activities=None, skill_names=None, top_k=5):
                 continue
             for i, pt in enumerate(weak_pts[:3]):
                 weight = 1.0 / (i + 1)
-                type_bonus += 0.25 * weight * affinity.get(pt, 0.0) * gap_map[sk]["gap_severity"]
+                pt_weight = PROBLEM_TYPE_WEIGHT.get(pt, 1.0)
+                type_bonus += 0.25 * weight * affinity.get(pt, 0.0) * pt_weight * gap_map[sk]["gap_severity"]
 
         total = base + diff_bonus + type_bonus
         matched_names = [skill_names.get(sk, sk) for sk in matched_skills]
