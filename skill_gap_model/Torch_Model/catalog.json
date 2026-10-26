@@ -10,24 +10,24 @@
     "SK008": "Algorithms"
 },
 "difficulty_levels": ["Easy", "Medium", "Hard"],
-"difficulty_weights": [0.45, 0.40, 0.15],
+"difficulty_weights": [0.15, 0.30, 0.55],
 "problem_types": ["Multiple Choice", "Conceptual", "Coding", "Debugging"],
-"problem_weights": [0.25, 0.20, 0.35, 0.20],
+"problem_weights": [0.15, 0.20, 0.40, 0.25],
 "learning_activities": [
     {"id": "A01", "title": "Python Syntax, Control Flow & Functions", "skills": ["SK001"], "type": "video", "duration_min": 45, "difficulty": "Easy"},
     {"id": "A02", "title": "Lists, Dicts, Sets & Comprehensions Lab", "skills": ["SK001", "SK002"], "type": "coding", "duration_min": 60, "difficulty": "Easy"},
-    {"id": "A03", "title": "Arrays, Linked Lists, Stacks & Queues", "skills": ["SK004"], "type": "interactive", "duration_min": 70, "difficulty": "Medium"},
+    {"id": "A03", "title": "Arrays, Linked Lists, Stacks & Queues", "skills": ["SK004"], "type": "Hands-On", "duration_min": 70, "difficulty": "Medium"},
     {"id": "A04", "title": "Sorting, Searching & Recursion Practice", "skills": ["SK008", "SK004"], "type": "coding", "duration_min": 90, "difficulty": "Medium"},
     {"id": "A05", "title": "Classes, Inheritance & Polymorphism", "skills": ["SK003", "SK001"], "type": "coding", "duration_min": 75, "difficulty": "Medium"},
-    {"id": "A06", "title": "SQL Joins, Aggregations & Subqueries", "skills": ["SK006"], "type": "interactive", "duration_min": 55, "difficulty": "Medium"},
+    {"id": "A06", "title": "SQL Joins, Aggregations & Subqueries", "skills": ["SK006"], "type": "Hands-On", "duration_min": 55, "difficulty": "Medium"},
     {"id": "A07", "title": "Core CS Concepts: Memory, OS & Networks", "skills": ["SK004"], "type": "video", "duration_min": 50, "difficulty": "Medium"},
     {"id": "A08", "title": "Debugging Strategies & Unit Testing", "skills": ["SK007", "SK001"], "type": "coding", "duration_min": 65, "difficulty": "Medium"},
     {"id": "A09", "title": "Big-O Analysis & Complexity Trade-offs", "skills": ["SK008", "SK003"], "type": "reading", "duration_min": 40, "difficulty": "Hard"},
     {"id": "A10", "title": "Dynamic Programming & Greedy Algorithms", "skills": ["SK008", "SK003"], "type": "coding", "duration_min": 110, "difficulty": "Hard"},
     {"id": "A11", "title": "End-to-End Coding Interview Prep", "skills": ["SK004", "SK008", "SK003"], "type": "project", "duration_min": 150, "difficulty": "Hard"},
-    {"id": "A12", "title": "Database Design & Normalization", "skills": ["SK005", "SK006"], "type": "interactive", "duration_min": 60, "difficulty": "Medium"},
+    {"id": "A12", "title": "Database Design & Normalization", "skills": ["SK005", "SK006"], "type": "Hands-On", "duration_min": 60, "difficulty": "Medium"},
     {"id": "A13", "title": "OOP Design Patterns in Practice", "skills": ["SK003"], "type": "coding", "duration_min": 80, "difficulty": "Hard"},
-    {"id": "A14", "title": "Systematic Debugging with Tools", "skills": ["SK007"], "type": "interactive", "duration_min": 45, "difficulty": "Medium"},
+    {"id": "A14", "title": "Systematic Debugging with Tools", "skills": ["SK007"], "type": "Hands-On", "duration_min": 45, "difficulty": "Medium"},
     {"id": "A15", "title": "Graph Algorithms & Tree Traversals", "skills": ["SK008", "SK004"], "type": "coding", "duration_min": 95, "difficulty": "Hard"}
 ]
 }

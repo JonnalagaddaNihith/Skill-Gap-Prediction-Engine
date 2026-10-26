@@ -5,6 +5,7 @@ import pandas as pd
 import json
 
 _PKG_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = _PKG_DIR.parent.parent
 if str(_PKG_DIR) not in sys.path:
     sys.path.insert(0, str(_PKG_DIR))
 
@@ -85,8 +86,8 @@ def create_mastery_labels(feat_df, seed=42):
 
 def main():
     """Run feature engineering and save results."""
-    data_path = Path("DataSet_Output/Generated_Learner_Assessment.csv")
-    out_dir = _PKG_DIR / "artifacts"
+    data_path = PROJECT_ROOT / "DataSet_Output" / "Generated_Learner_Assessment.csv"
+    out_dir = PROJECT_ROOT / "artifacts"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     print("=" * 65)

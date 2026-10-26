@@ -1,4 +1,4 @@
-from architecture import (
+from .architecture import (
     LEARNING_ACTIVITIES,
     SKILL_NAMES,
     DIFFICULTY_LEVELS,

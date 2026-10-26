@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import torch
 
-from architecture import FEATURE_COLS, SKILL_NAMES
+from .architecture import FEATURE_COLS, SKILL_NAMES
 
 
 def _weak_profile(student_raw: pd.DataFrame, skill_id: str):

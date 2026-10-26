@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-"""
-Model architecture and dataset for learner proficiency estimation.
-"""
-
 import torch
 import torch.nn as nn
 import json

@@ -3,11 +3,11 @@ import json
 import torch
 import pandas as pd
 
-from architecture import SkillProficiencyNet, FEATURE_COLS, SKILL_NAMES, LEARNING_ACTIVITIES
+from .architecture import SkillProficiencyNet, FEATURE_COLS, SKILL_NAMES, LEARNING_ACTIVITIES
 
 
 def get_default_artifact_dir():
-    return Path(__file__).resolve().parent / "artifacts"
+    return Path(__file__).resolve().parent.parent.parent / "artifacts"
 
 
 def load_checkpoint(artifact_dir=None, device=None):
@@ -22,7 +22,7 @@ def load_checkpoint(artifact_dir=None, device=None):
     artifact_dir = Path(artifact_dir) if artifact_dir else get_default_artifact_dir()
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")
 
-    ckpt_path = artifact_dir / "proficiency_model.pt"
+    ckpt_path = artifact_dir / "skill_proficiency_model.pt"
     if not ckpt_path.exists():
         # fallback to older naming
         for name in ("Synthetic_proficiency_model.pt", "real_proficiency_model.pt"):

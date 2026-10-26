@@ -8,7 +8,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
-from architecture import (
+from .architecture import (
     FEATURE_COLS,
     SKILL_NAMES,
     LEARNING_ACTIVITIES,
@@ -21,13 +21,9 @@ from architecture import (
 )
 from predict import identify_gaps
 from recommend import recommend_activities
-from feature_engineering import (
-    load_and_prepare,
-    build_student_skill_features,
-    create_mastery_labels,
-)
 
 _PKG_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = _PKG_DIR.parent.parent
 if str(_PKG_DIR) not in sys.path:
     sys.path.insert(0, str(_PKG_DIR))
 
@@ -122,7 +118,7 @@ def evaluate(model, val_loader, device="cpu"):
 # Main
 
 def main():
-    out_dir = _PKG_DIR / "artifacts"
+    out_dir = PROJECT_ROOT / "artifacts"
     out_dir.mkdir(parents=True, exist_ok=True)
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -171,7 +167,7 @@ def main():
     # 3. Train
     print("\n[3] Training SkillProficiencyNet …")
     model = SkillProficiencyNet(input_dim=len(FEATURE_COLS)).to(device)
-    model, history = train_model(model, train_loader, val_loader, epochs, lr, device=device)
+    model, history = train_model(model, train_loader, val_loader, epochs=100, lr=1e-3, device=device)
 
     metrics = evaluate(model, val_loader, device=device)
 
@@ -199,12 +195,12 @@ def main():
         "problem_weights": PROBLEM_WEIGHTS,
         "metrics": metrics,
         "history": history,
-    }, out_dir / "proficiency_model.pt")
+    }, out_dir / "skill_proficiency_model.pt")
 
     with open(out_dir / "activities.json", "w") as f:
         json.dump(LEARNING_ACTIVITIES, f, indent=2)
 
-    print(f"\n  Saved → {out_dir}/proficiency_model.pt")
+    print(f"\n  Saved → {out_dir}/skill_proficiency_model.pt")
     print(f"  Saved → {out_dir}/activities.json")
 
     # 5. Demo
