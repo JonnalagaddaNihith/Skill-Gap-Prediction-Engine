@@ -13,7 +13,7 @@ sys.path.insert(0, str(project_root))
 from skill_gap_model.Torch_Model.feature_engineering import build_student_skill_features, create_mastery_labels
 from skill_gap_model.Torch_Model.train_test import train_model
 from app.db.database import SessionLocal
-from app.models.test_attempt import TestAttempt, TestAnswer
+from app.models.test_attempt import TestAttempt
 from app.models.question import Question
 from app.config import get_settings
 

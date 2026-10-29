@@ -165,32 +165,43 @@ const TestResults = () => {
                     <Typography variant="body2" color="textSecondary" gutterBottom>
                       Options:
                     </Typography>
-                    {JSON.parse(answer.question.options).map((option, optIndex) => (
-                      <Box
-                        key={optIndex}
-                        sx={{
-                          p: 1,
-                          mb: 0.5,
-                          borderRadius: 1,
-                          bgcolor:
-                            option === answer.question.correct_answer
-                              ? 'success.light'
-                              : option === answer.user_answer && option !== answer.question.correct_answer
-                              ? 'error.light'
-                              : 'grey.100',
-                        }}
-                      >
-                        <Typography variant="body2">
-                          {option === answer.question.correct_answer && (
-                            <strong>✓ Correct: </strong>
-                          )}
-                          {option === answer.user_answer && option !== answer.question.correct_answer && (
-                            <strong>✗ Your Answer: </strong>
-                          )}
-                          {option}
-                        </Typography>
-                      </Box>
-                    ))}
+                    {(() => {
+                      try {
+                        const parsedOptions = JSON.parse(answer.question.options);
+                        return parsedOptions.map((option, optIndex) => (
+                          <Box
+                            key={optIndex}
+                            sx={{
+                              p: 1,
+                              mb: 0.5,
+                              borderRadius: 1,
+                              bgcolor:
+                                option === answer.question.correct_answer
+                                  ? 'success.light'
+                                  : option === answer.user_answer && option !== answer.question.correct_answer
+                                  ? 'error.light'
+                                  : 'grey.100',
+                            }}
+                          >
+                            <Typography variant="body2">
+                              {option === answer.question.correct_answer && (
+                                <strong>✓ Correct: </strong>
+                              )}
+                              {option === answer.user_answer && option !== answer.question.correct_answer && (
+                                <strong>✗ Your Answer: </strong>
+                              )}
+                              {option}
+                            </Typography>
+                          </Box>
+                        ));
+                      } catch (e) {
+                        return (
+                          <Typography variant="body2" color="error">
+                            Error parsing options
+                          </Typography>
+                        );
+                      }
+                    })()}
                   </Box>
                 )}
 

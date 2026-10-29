@@ -5,14 +5,14 @@ from pathlib import Path
 
 class Settings(BaseSettings):
     # Database
-    MYSQL_HOST: str = "localhost"
-    MYSQL_PORT: int = 3306
-    MYSQL_USER: str = "root"
-    MYSQL_PASSWORD: str = "Nihith&*3003"
-    MYSQL_DATABASE: str = "skill_gap_db"
+    MYSQL_HOST: str
+    MYSQL_PORT: int
+    MYSQL_USER: str
+    MYSQL_PASSWORD: str
+    MYSQL_DATABASE: str
 
     # JWT Secret
-    SECRET_KEY: str = "your-secret-key-change-in-production"
+    SECRET_KEY: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24
     # Model Settings

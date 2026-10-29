@@ -16,11 +16,12 @@ import {
   Collapse,
 } from '@mui/material';
 import { ArrowBack, ArrowForward, Lightbulb as LightbulbIcon } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { testService } from '../services/testService';
 
 const Test = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -29,14 +30,30 @@ const Test = () => {
   const [answers, setAnswers] = useState({});
   const [hintsShown, setHintsShown] = useState({});
   const [startTime, setStartTime] = useState(null);
+  const [questionStartTime, setQuestionStartTime] = useState({});
+  const [questionTimes, setQuestionTimes] = useState({});
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
-        const data = await testService.getQuestions({ numQuestions: 10 });
+
+        // Get skill_id and difficulty from URL params
+        const skillId = searchParams.get('skill_id');
+        const difficulty = searchParams.get('difficulty');
+
+        const params = { numQuestions: 10 };
+        if (skillId) params.skillId = skillId;
+        if (difficulty) params.difficulty = difficulty;
+
+        const data = await testService.getQuestions(params);
         setQuestions(data);
         setStartTime(Date.now());
+
+        // Initialize start time for first question
+        if (data.length > 0) {
+          setQuestionStartTime({ [data[0].id]: Date.now() });
+        }
       } catch (err) {
         setError(
           err.response?.data?.detail || 'Failed to load questions. Please try again.'
@@ -47,7 +64,7 @@ const Test = () => {
     };
 
     fetchQuestions();
-  }, []);
+  }, [searchParams]);
 
   const handleAnswerChange = (questionId, value) => {
     setAnswers({
@@ -65,13 +82,53 @@ const Test = () => {
 
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
+      // Record time spent on current question
+      const currentQ = questions[currentQuestionIndex];
+      if (currentQ && questionStartTime[currentQ.id]) {
+        const timeSpent = Math.floor((Date.now() - questionStartTime[currentQ.id]) / 1000);
+        setQuestionTimes(prev => ({
+          ...prev,
+          [currentQ.id]: (prev[currentQ.id] || 0) + timeSpent
+        }));
+      }
+
+      // Move to next question
+      const nextQ = questions[currentQuestionIndex + 1];
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+
+      // Set start time for next question
+      if (nextQ) {
+        setQuestionStartTime(prev => ({
+          ...prev,
+          [nextQ.id]: Date.now()
+        }));
+      }
     }
   };
 
   const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
+      // Record time spent on current question
+      const currentQ = questions[currentQuestionIndex];
+      if (currentQ && questionStartTime[currentQ.id]) {
+        const timeSpent = Math.floor((Date.now() - questionStartTime[currentQ.id]) / 1000);
+        setQuestionTimes(prev => ({
+          ...prev,
+          [currentQ.id]: (prev[currentQ.id] || 0) + timeSpent
+        }));
+      }
+
+      // Move to previous question
+      const prevQ = questions[currentQuestionIndex - 1];
       setCurrentQuestionIndex(currentQuestionIndex - 1);
+
+      // Set start time for previous question
+      if (prevQ) {
+        setQuestionStartTime(prev => ({
+          ...prev,
+          [prevQ.id]: Date.now()
+        }));
+      }
     }
   };
 
@@ -85,13 +142,23 @@ const Test = () => {
     setError('');
 
     try {
+      // Record time spent on current question before submitting
+      const currentQ = questions[currentQuestionIndex];
+      if (currentQ && questionStartTime[currentQ.id]) {
+        const timeSpent = Math.floor((Date.now() - questionStartTime[currentQ.id]) / 1000);
+        setQuestionTimes(prev => ({
+          ...prev,
+          [currentQ.id]: (prev[currentQ.id] || 0) + timeSpent
+        }));
+      }
+
       const timeTaken = Math.floor((Date.now() - startTime) / 1000);
       const testData = {
         time_taken_seconds: timeTaken,
         answers: questions.map((q) => ({
           question_id: q.id,
           user_answer: answers[q.id] || '',
-          time_taken_seconds: null,
+          time_taken_seconds: questionTimes[q.id] || 0,
           hint_used: hintsShown[q.id] ? 1 : 0,
           attempt_number: 1,
         })),
@@ -276,7 +343,26 @@ const Test = () => {
               key={q.id}
               variant={currentQuestionIndex === index ? 'contained' : 'outlined'}
               size="small"
-              onClick={() => setCurrentQuestionIndex(index)}
+              onClick={() => {
+                // Record time spent on current question
+                const currentQ = questions[currentQuestionIndex];
+                if (currentQ && questionStartTime[currentQ.id]) {
+                  const timeSpent = Math.floor((Date.now() - questionStartTime[currentQ.id]) / 1000);
+                  setQuestionTimes(prev => ({
+                    ...prev,
+                    [currentQ.id]: (prev[currentQ.id] || 0) + timeSpent
+                  }));
+                }
+
+                // Navigate to clicked question
+                setCurrentQuestionIndex(index);
+
+                // Set start time for the new question
+                setQuestionStartTime(prev => ({
+                  ...prev,
+                  [q.id]: Date.now()
+                }));
+              }}
               sx={{
                 minWidth: 40,
                 bgcolor: answers[q.id] ? 'success.light' : undefined,

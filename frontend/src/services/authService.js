@@ -47,4 +47,19 @@ export const authService = {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   },
+
+  updateUsername: async (username) => {
+    const response = await api.put('/api/auth/update-username', {
+      username,
+    });
+    return response.data;
+  },
+
+  changePassword: async (currentPassword, newPassword) => {
+    const response = await api.put('/api/auth/change-password', {
+      current_password: currentPassword,
+      new_password: newPassword,
+    });
+    return response.data;
+  },
 };

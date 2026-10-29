@@ -147,11 +147,6 @@ const Recommendations = () => {
                       sx={{ height: 10, borderRadius: 5 }}
                     />
                   </Box>
-                  {gap.observed_accuracy !== null && (
-                    <Typography variant="body2" color="textSecondary" gutterBottom>
-                      Observed Accuracy: {Math.round(gap.observed_accuracy * 100)}%
-                    </Typography>
-                  )}
                   {gap.n_attempts !== null && (
                     <Typography variant="body2" color="textSecondary" gutterBottom>
                       Attempts: {gap.n_attempts}
@@ -161,17 +156,6 @@ const Recommendations = () => {
                   <Typography variant="subtitle2" gutterBottom>
                     Weak Areas
                   </Typography>
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1 }}>
-                    {gap.weak_difficulties.map((diff, index) => (
-                      <Chip
-                        key={index}
-                        label={diff}
-                        size="small"
-                        color="warning"
-                        variant="outlined"
-                      />
-                    ))}
-                  </Box>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                     {gap.weak_problem_types.map((type, index) => (
                       <Chip

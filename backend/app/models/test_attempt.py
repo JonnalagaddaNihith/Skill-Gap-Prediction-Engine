@@ -27,8 +27,9 @@ class TestAnswer(Base):
     user_answer = Column(Text, nullable=False)
     is_correct = Column(Integer, nullable=False)  # 0 or 1
     time_taken_seconds = Column(Integer, nullable=True)
-    hint_used = Column(Integer, default=0)  # Changed from hints_used to hint_used for model compatibility
-    attempt_number = Column(Integer, default=1)  # Track attempt number for model
+    hint_used = Column(Integer, default=0)  
+    attempt_number = Column(Integer, default=1)
 
-    # Relationship
+    # Relationships
     test_attempt = relationship("TestAttempt", back_populates="answers")
+    question = relationship("Question", backref="test_answers")

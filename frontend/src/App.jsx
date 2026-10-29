@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Test from './pages/Test';
+import TestSelection from './pages/TestSelection';
 import TestResults from './pages/TestResults';
 import Recommendations from './pages/Recommendations';
 import History from './pages/History';
@@ -46,6 +47,16 @@ function App() {
           <ProtectedRoute>
             <Layout>
               <Test />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/test-selection"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <TestSelection />
             </Layout>
           </ProtectedRoute>
         }

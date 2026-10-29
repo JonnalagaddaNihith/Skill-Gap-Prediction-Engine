@@ -149,8 +149,8 @@ const Dashboard = () => {
           />
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <CardContent>
+          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 1 }}>
+            <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 1 }}>
               <Button
                 variant="contained"
                 size="large"
@@ -158,7 +158,16 @@ const Dashboard = () => {
                 onClick={() => navigate('/test')}
                 startIcon={<QuizIcon />}
               >
-                Take New Test
+                Start Random Test
+              </Button>
+              <Button
+                variant="outlined"
+                size="large"
+                fullWidth
+                onClick={() => navigate('/test-selection')}
+                startIcon={<QuizIcon />}
+              >
+                Choose Topic
               </Button>
             </CardContent>
           </Card>

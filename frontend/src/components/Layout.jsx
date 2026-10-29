@@ -9,6 +9,7 @@ import {
   Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   useMediaQuery,
@@ -42,7 +43,7 @@ const Layout = ({ children }) => {
 
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-    { text: 'Take Test', icon: <QuizIcon />, path: '/test' },
+    { text: 'Take Test', icon: <QuizIcon />, path: '/test-selection' },
     { text: 'Recommendations', icon: <AnalyticsIcon />, path: '/recommendations' },
     { text: 'History', icon: <HistoryIcon />, path: '/history' },
     { text: 'Profile', icon: <PersonIcon />, path: '/profile' },
@@ -53,30 +54,31 @@ const Layout = ({ children }) => {
       <Toolbar />
       <List>
         {menuItems.map((item) => (
-          <ListItem
-            button
-            key={item.text}
-            onClick={() => {
-              navigate(item.path);
-              if (isMobile) setMobileOpen(false);
-            }}
-            selected={location.pathname === item.path}
-          >
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.text} />
+          <ListItem key={item.text} disablePadding>
+            <ListItemButton
+              onClick={() => {
+                navigate(item.path);
+                if (isMobile) setMobileOpen(false);
+              }}
+              selected={location.pathname === item.path}
+            >
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItemButton>
           </ListItem>
         ))}
-        <ListItem
-          button
-          onClick={() => {
-            logout();
-            navigate('/login');
-          }}
-        >
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText primary="Logout" />
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
+              logout();
+              navigate('/login');
+            }}
+          >
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItemButton>
         </ListItem>
       </List>
     </Box>
